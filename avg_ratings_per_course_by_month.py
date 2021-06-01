@@ -88,7 +88,7 @@ def app():
 
     #options becomes an attribute of hc as the dictionary.
     #then, accessing title key then text and changing the element to average rating by Day
-    hc.options.title.text = "Average Rating by Week"
+    hc.options.title.text = "Average Rating per Course by Month"
     #Changing Data
     #series is a list which has a dictionary in it with name and data
     #giving x axis data
