@@ -6,10 +6,10 @@ from pytz import utc
 
 #creates dataframe
 data = pandas.read_csv("reviews.csv",parse_dates=["Timestamp"])
-#adds a column for the day the review was made through using the timestamp column
-data["Day"] = data["Timestamp"].dt.date
-#creates a new dataframe where each day is an index and a column of the mean ratings
-day_average = data.groupby(["Day"]).mean()
+#adds a column for the week the review was made through using the timestamp column
+data["Week"] = data["Timestamp"].dt.strftime("%Y-%U")
+#creates a new dataframe where each week is an index and a column of the mean ratings
+week_average = data.groupby(["Week"]).mean()
 #js code from https://www.highcharts.com/docs/chart-and-series-types/spline-chart copied the json portion from HighCharts
 #js code for spline chart
 #triple quote string allows the string to be multi lined and not get confused with double/single quotes within it
@@ -20,7 +20,7 @@ chart_def = """
         inverted: false
     },
     title: {
-        text: 'Average Rating by Day'
+        text: 'Average Rating by Week'
     },
     subtitle: {
         text: ''
@@ -89,15 +89,14 @@ def app():
 
     #options becomes an attribute of hc as the dictionary.
     #then, accessing title key then text and changing the element to average rating by Day
-    hc.options.title.text = "Average Rating by Day"
+    hc.options.title.text = "Average Rating by Week"
     #Changing Data
     #series is a list which has a dictionary in it with name and data
     #giving x axis data
     #dates are not considered numbers in high charts but rather as categories
-    hc.options.xAxis.categories = list(day_average.index)
+    hc.options.xAxis.categories = list(week_average.index)
     #data takes a list of lists.
     #x coordinates are the dates, y coordinates are the mean ratings
-    hc.options.series[0].data = list(day_average["Rating"])
+    hc.options.series[0].data = list(week_average["Rating"])
     return wp
-
 jp.justpy(app)
