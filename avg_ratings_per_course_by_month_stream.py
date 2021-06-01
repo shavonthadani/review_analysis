@@ -5,7 +5,7 @@ from pytz import utc
 
 #creates dataframe
 data = pandas.read_csv("reviews.csv",parse_dates=["Timestamp"])
-#adds a column for the week the review was made through using the timestamp column
+#adds a column for the month the review was made through using the timestamp column
 data["Month"] = data["Timestamp"].dt.strftime("%Y-%m")
 #Collects the data into groups by course and month and has a column for rating mean
 month_average = data.groupby(["Month", "Course Name"])["Rating"].mean().unstack()
